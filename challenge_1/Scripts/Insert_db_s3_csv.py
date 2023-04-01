@@ -4,6 +4,7 @@ from io import StringIO
 from sqlalchemy import create_engine
 from typing import Tuple
 import re
+import functions
 import botocore
 
 
@@ -99,7 +100,10 @@ def get_s3_files(bucket: str, pattern: str, aws_access_key_id: str, aws_secret_a
         if key.endswith('.csv'):
             csv_file = obj.get()['Body'].read().decode('utf-8')
             csv_files.append(pd.read_csv(StringIO(csv_file),header=None))
-    return csv_files,table_names
+    
+    table_names_final = [elemento for elemento in table_names if elemento != 'insumo/']
+    table_names_final = [elemento.replace('insumo/', '') for elemento in table_names_final]
+    return csv_files,table_names_final
 
 
 
@@ -137,5 +141,19 @@ def insert_to_db(sql_engine, s3_csv_files_data: list,s3_files_names: list) -> No
                 
 
 
+
+if __name__ == "__main__":
+
+
+    # Connect to the database
+    sql_engine, db_connection = connect_db(functions.user, functions.password, functions.host, functions.port, functions.db)
+    #connect to aws
+    s3=connect_aws(functions.aws_access_key_id,functions.aws_secret_access_key,functions.aws_region_name)
+   
+    #  Get table names for each CSV file and get dfs in a list
+    s3_csv_files_data,s3_files_names = get_s3_files(functions.s3_bucket_name, functions.s3_prefix,functions.aws_access_key_id,functions.aws_secret_access_key,s3)
+    
+    #   Insert Data s3
+    insert_to_db(sql_engine, s3_csv_files_data,s3_files_names)
 
 
