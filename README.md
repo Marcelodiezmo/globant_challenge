@@ -2,7 +2,7 @@
 
 
 ##### Table of Contents  
-[Headers](#**3.Challenge_1**)  
+[Headers](#3.Challenge_1)  
 [Emphasis](#emphasis)  
 ...snip...    
 <a name="headers"/>
