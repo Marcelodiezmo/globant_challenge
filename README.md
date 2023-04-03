@@ -1,16 +1,6 @@
 # *Globant_challenge*
 
 
-##### Table of Contents  
-[Headers](#3.Challenge_1)  
-[Emphasis](#emphasis)  
-...snip...    
-<a name="headers"/>
-## Headers
-
-
-
-
 ## **1.Introduction**
 This repository provides 2 folders and one file.
 * challenge_1 
