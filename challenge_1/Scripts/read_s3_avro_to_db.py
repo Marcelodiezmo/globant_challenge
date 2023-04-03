@@ -84,7 +84,7 @@ def insert_db(connection: psycopg2.extensions.connection, data: List[Dict[str, A
         sql = f"INSERT INTO {table_name_db} ({','.join(row.keys())}) VALUES ({','.join(['%s']*len(row))})"
         # ejecutar la consulta SQL con los valores de la fila
         cursor.execute(sql, tuple(row.values()))
-    
+     
     # confirmar los cambios
     connection.commit()
     

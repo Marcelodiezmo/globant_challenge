@@ -1,0 +1,29 @@
+{
+  "app": "python app.py",
+  "context": {
+    "aws-cdk:enableDiffNoFail": "true",
+    "@aws-cdk/core:stackRelativeExports": "true",
+    "@aws-cdk/aws-ecr-assets:dockerIgnoreSupport": true,
+    "@aws-cdk/aws-secretsmanager:parseOwnedSecretName": true,
+    "@aws-cdk/aws-kms:defaultKeyPolicies": true,
+    "shared_values": {
+      "dev_values": {
+        "value": "dev",
+        "db_name": "Globant",
+        "rds_host": "mydb.cjt7teobtbru.us-east-1.rds.amazonaws.com",
+        "rol_arn" : "arn:aws:iam::834574338254:role/service-role/ConsultDbGlobant-role-d5xoz7ws",
+        "layer_arn": "arn:aws:lambda:us-east-1:834574338254:layer:mysql-layer:1",
+        "security_group_id": "sg-0c9f3f3a7fd478e3c",
+        "vcp_id": "vpc-05b2c2cdc6fc7b49b",
+        "subnets": ["subnet-0b993f95bdbbeb219"],
+        "bucket_name": "info-globant",
+        "vpce_service_name": "com.amazonaws.us-east-1.execute-api",
+        "vpce_vpc_id": "vpc-018a67ed2f2b7cccc",
+        "vpce_security_groups": ["sg-09ecff4303aaf9489"],
+        "db_port":"3306",
+        "db_pass":"12345678",
+        "db_user":"admin"
+      }
+    }
+  }
+}
