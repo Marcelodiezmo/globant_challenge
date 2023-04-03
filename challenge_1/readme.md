@@ -1,5 +1,7 @@
 # INTRODUCTION
 
+
+
 This repository contains four files: backup_bd.py insert_db_s3_csv, read_s3_avro_to_db and functions.py
 
 * The script '**insert_db_s3_cvs.py**' reads csv information stored in s3 bucket and saves the results in a mySQl database, create 3 tables : departments, hired_employees and jobs.
