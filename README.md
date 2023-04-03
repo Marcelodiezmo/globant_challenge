@@ -2,7 +2,7 @@
 
 
 ##### Table of Contents  
-[Headers](#Hola)  
+[Headers](##**1.Introduction**)  
 [Emphasis](#emphasis)  
 ...snip...    
 <a name="headers"/>
@@ -11,7 +11,7 @@
 
 
 
-## **1. Introduction**
+## **1.Introduction**
 This repository provides 2 folders and one file.
 * challenge_1 
 * cdk_challenge_2.
