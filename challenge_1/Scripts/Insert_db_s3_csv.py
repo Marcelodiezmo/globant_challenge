@@ -2,43 +2,29 @@ import boto3
 import pandas as pd
 from io import StringIO
 from sqlalchemy import create_engine
-from typing import Tuple
+from typing import Tuple,Any
 import re
 import functions
 import botocore
 
 
-def connect_aws(aws_access_key_id: str, aws_secret_access_key: str, aws_region_name: str):
-    try:
-        s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id,
-                                    aws_secret_access_key=aws_secret_access_key,
-                                    region_name=aws_region_name)
-        print(f"Connected to AWS S3 in {aws_region_name} region")
-        return s3
-    except botocore.exceptions.NoCredentialsError:
-        print("AWS credentials not found or invalid.")
-    except botocore.exceptions.ClientError as e:
-        print(f"Failed to connect to AWS S3: {e}")
-    except Exception as e:
-        print(f"An error occurred while connecting to AWS S3: {e}")
-
 
 
 
 def connect_db(user: str, password: str, host: str, port: str, db_name: str) -> Tuple:
-    """Conexión a la base de datos
-
+    """Database connection function
+    
     Args:
-        user (str): usuario de la base de datos
-        password (str): contraseña del usuario
-        host (str): dirección IP o hostname del servidor de la base de datos
-        port (str): puerto del servidor de la base de datos
-        db_name (str): nombre de la base de datos a la que conectarse
-
+        user (str): database user
+        password (str): user's password
+        host (str): IP address or hostname of the database server
+        port (str): database server port
+        db_name (str): name of the database to connect to
+    
     Returns:
-        Tuple: devuelve dos objetos para manejar la conexión con la base de datos:
-            sql_engine (sqlalchemy.engine.base.Engine): objeto para utilizarlo como conexión y así, guardar información a la base de datos
-            db_connection (sqlalchemy.engine.base.Connection): objeto para utilizarlo como conexión y así, leer información de la base datos
+        Tuple: two objects to manage the database connection:
+            sql_engine (sqlalchemy.engine.base.Engine): object to use as a connection and save information to the database
+            db_connection (sqlalchemy.engine.base.Connection): object to use as a connection and read information from the database
     """
     try:
         db_url = f"mysql+pymysql://{user}:{password}@{host}:{port}/{db_name}"
@@ -55,16 +41,16 @@ def connect_db(user: str, password: str, host: str, port: str, db_name: str) -> 
 
 def get_name_files(s3,bucket: str,prefix : str)-> list:
     """
-    Obtiene los nombres de los archivos en una carpeta específica de un bucket de S3.
-
+    Get the names of the files in a specific folder of an S3 bucket.
+    
     Args:
-        s3: objeto de la clase boto3.client para interactuar con S3.
-        bucket (str): nombre del bucket.
-        prefix (str): prefijo para filtrar los objetos del bucket.
-
+    s3 (boto3.client): object of the boto3.client class to interact with S3.
+    bucket (str): name of the bucket.
+    prefix (str): prefix to filter the objects in the bucket.
+    
     Returns:
-        Una lista con los nombres de los archivos en la carpeta especificada.
-    """ 
+    A list with the names of the files in the specified folder.
+    """
         # Reemplaza 'my-bucket' y 'my-folder' con el nombre de tu bucket y carpeta, respectivamente
     response = s3.list_objects(Bucket=bucket, Prefix=prefix)
 
@@ -79,16 +65,16 @@ def get_name_files(s3,bucket: str,prefix : str)-> list:
 
 
 def get_s3_files(bucket: str, pattern: str, aws_access_key_id: str, aws_secret_access_key: str,s3)-> Tuple:
-    """Obtiene los archivos CSV del bucket de Amazon S3 especificado que cumplen el patrón especificado.
+    """Gets the CSV files from the specified Amazon S3 bucket that meet the specified pattern.
 
     Args:
-        bucket (str): nombre del bucket de Amazon S3
-        pattern (str): patrón para buscar los archivos
-        aws_access_key_id (str): AWS access key ID
-        aws_secret_access_key (str): AWS secret access key
-
+        bucket (str): The name of the Amazon S3 bucket.
+        pattern (str): The pattern to search for files that match.
+        aws_access_key_id (str): The AWS access key ID.
+        aws_secret_access_key (str): The AWS secret access key.
+    
     Returns:
-        list: lista de archivos CSV que cumplen el patrón
+        list: A list of CSV files that match the pattern.
     """
     table_names = get_name_files(s3,bucket,pattern)
     session = boto3.Session(aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
@@ -109,17 +95,17 @@ def get_s3_files(bucket: str, pattern: str, aws_access_key_id: str, aws_secret_a
 
 
 def insert_to_db(sql_engine, s3_csv_files_data: list,s3_files_names: list) -> None:
-    """Inserta los datos del archivo CSV en la tabla correspondiente de la base de datos.
+    """Inserts the data from the CSV file into the corresponding table in the database..
 
     Args:
-        sql_engine (sqlalchemy.engine.base.Engine): objeto para utilizarlo como conexión y así, guardar información a la base de datos
-        table_name (str): nombre de la tabla de la base de datos
-        s3_files_names (str): data de cada archivo
-
+        sql_engine (sqlalchemy.engine.base.Engine): object to use as connection and save information to the database
+        table_name (str): name of the table in the database
+        s3_files_names (str): data from each file
+    
     Returns:
         None
     """
-    
+
     column_names = [
         # Sublista para la tabla "departments"
         ["id", "department"],
@@ -148,7 +134,7 @@ if __name__ == "__main__":
     # Connect to the database
     sql_engine, db_connection = connect_db(functions.user, functions.password, functions.host, functions.port, functions.db)
     #connect to aws
-    s3=connect_aws(functions.aws_access_key_id,functions.aws_secret_access_key,functions.aws_region_name)
+    _,s3=functions.connect_aws(functions.aws_access_key_id,functions.aws_secret_access_key,functions.aws_region_name)
    
     #  Get table names for each CSV file and get dfs in a list
     s3_csv_files_data,s3_files_names = get_s3_files(functions.s3_bucket_name, functions.s3_prefix,functions.aws_access_key_id,functions.aws_secret_access_key,s3)
