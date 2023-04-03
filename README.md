@@ -89,7 +89,7 @@ After editing the variables, the backup_bd.py and insert_db_s3_csv.py scripts ca
 
 
 
-### **Nota**:
+### **Note**:
     
     the files csv should have the same structure.
 
