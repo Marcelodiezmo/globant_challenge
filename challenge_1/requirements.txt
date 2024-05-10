@@ -1,9 +1,10 @@
 pandas==1.4.4
 SQLAlchemy==1.4.39
 pytest==7.1.2
-pymysql=1.0.3
+pymysql
 fastavro==1.7.3
 boto3==1.26.102
 botocore==1.29.102
 typing==3.7.4.3
 psycopg2==2.9.5
+python-dotenv==1.0.0

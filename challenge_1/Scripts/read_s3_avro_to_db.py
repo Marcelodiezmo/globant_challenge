@@ -7,6 +7,11 @@ import io
 import psycopg2
 import fastavro
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
 
 
 def read_avro_file_from_s3(bucket_name: str,
@@ -106,7 +111,7 @@ def insert_db(connection: psycopg2.extensions.connection,
 if __name__ == "__main__":
     # table_name_db="hired_employees"
     # table_name_db="departments"
-    table_name_db = "jobs"
+    table_name_db = os.getenv("table_name_db_backup")
     table_name_backup = table_name_db + "_table"
 
     _, s3 = functions.connect_aws(

@@ -13,7 +13,7 @@ def connect_db(
         password: str,
         host: str,
         port: str,
-        db_name: str) -> Tuple:
+        db_name: str) -> Tuple: 
     """Database connection function
 
     Args:
