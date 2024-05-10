@@ -4,7 +4,11 @@ import pymysql
 import botocore
 
 from typing import Optional, Union, Dict
+import os
+from dotenv import load_dotenv
 
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
 
 session = boto3.Session()
 credentials = session.get_credentials()
@@ -13,16 +17,16 @@ aws_secret_access_key=credentials.secret_key
 aws_region_name = 'us-east-1'
 
 
-user = "admin"
-password = "12345678"
-host = "mydb.cjt7teobtbru.us-east-1.rds.amazonaws.com"
-port = 3306
-db = "Globant"
-list_name_table = ['jobs', 'departments', 'hired_employees']
-
-s3_bucket_name = 'info-globant'
-s3_prefix = 'insumo'
-s3_prefix_backup = 'backup'
+# Acceder a las variables de entorno
+user = os.getenv("user")
+password = os.getenv("password")
+host = os.getenv("host")
+port = os.getenv("port")
+db = os.getenv("db")
+list_name_table = os.getenv("list_name_table").split(',')
+s3_bucket_name = os.getenv("s3_bucket_name")
+s3_prefix = os.getenv("s3_prefix")
+s3_prefix_backup = os.getenv("s3_prefix_backup")
 
 
 def connect_aws(aws_access_key_id: str, aws_secret_access_key: str,
@@ -146,3 +150,16 @@ def create_avro_schema(
             ]
         }
     return avro_schema
+
+
+if __name__ == "__main__":
+    # Acceder a las variables de entorno
+    user = os.getenv("user")
+    password = os.getenv("password")
+    host = os.getenv("host")
+    port = os.getenv("port")
+    db = os.getenv("db")
+    list_name_table = os.getenv("list_name_table").split(',')
+    s3_bucket_name = os.getenv("s3_bucket_name")
+    s3_prefix = os.getenv("s3_prefix")
+    s3_prefix_backup = os.getenv("s3_prefix_backup")
