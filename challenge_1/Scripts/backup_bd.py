@@ -5,7 +5,6 @@ import pandas as pd
 import functions
 from typing import List, Any, Dict
 
-
 def read_db(conn: Any, name_table: str, db: str) -> List[Dict[str, Any]]:
     """
     Reads a table from a database and returns the results as a list of dictionaries.
@@ -70,7 +69,6 @@ def avro_to_s3(name_table: str,
         s3_bucket_name,
         f"{s3_prefix_backup}/{today}/{name_table}_table.avro").put(
         Body=avro_bytes.getvalue())
-
 
 if __name__ == "__main__":
 

@@ -31,7 +31,6 @@ class lambdaStack(Construct):
         subnets = shared_values["subnets"]
         vpc_id = shared_values["vcp_id"]
     
-   
 
        # secret_name = shared_values["secret_name"]
 

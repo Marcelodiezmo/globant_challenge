@@ -87,8 +87,6 @@ host: IP address or domain name of the MySQL database server.
 
 After editing the variables, the backup_bd.py and insert_db_s3_csv.py scripts can be executed. The script insert_db_s3_csv.py reads the csv files in the specified AWS s3 bucket and create  three tables in mysql database with those information.
 
-
-
 ### **Note**:
     
     the files csv should have the same structure.
